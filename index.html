@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Games</title>
+
+<script>
+/* =====================================================================
+   THE PART YOU EDIT. Everything below the "END" banner can stay as is.
+   ===================================================================== */
+
+const SITE = {
+  title: "My Games",
+  tagline: "Everything I've made in one place. Pick a game and press play."
+};
+
+/*
+  ADD YOUR GAMES HERE
+
+  To add a game, copy one { ... }, block, paste it under the last one,
+  and change the text. Every block must end with a comma.
+
+    title        the name shown on the card
+    description  one or two sentences about the game
+    url          the link to the game (works on any domain)
+    tag          optional: a small label like "RPG" or "Puzzle"
+    color        optional: a hex code like "#FF9DC8" (otherwise cards
+                 cycle through the built-in colours)
+
+  Cards appear in the order of this list, so put your newest game first
+  if you want it at the top.
+
+  If your text contains a double quote ("), write \" instead,
+  or use a single quote (') so the list doesn't break.
+*/
+const GAMES = [
+  {
+    title: "Sample game one",
+    description: "Replace this with a short pitch: what you do in the game and why it's fun.",
+    url: "https://example.com/game-one",
+    tag: "Clicker"
+  },
+  {
+    title: "Sample game two",
+    description: "One or two sentences is plenty. Say what the player does and what makes it tricky.",
+    url: "https://example.com/game-two",
+    tag: "Puzzle",
+    color: "#FF9DC8"
+  },
+  {
+    title: "Sample game three",
+    description: "Tag and color are optional. Leave them out and the card simply won't show a tag.",
+    url: "https://example.com/game-three"
+  },
+];
+
+/* ============================== END =============================== */
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Rubik:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --paper: #EEF0FF;
+  --ink: #14143A;
+  --focus: #3B4BFF;
+  --radius: 20px;
+  --display: "Dela Gothic One", "Arial Black", Impact, sans-serif;
+  --body: Rubik, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 1rem/1.5 var(--body);
+}
+.wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: clamp(28px, 6vw, 72px) clamp(18px, 4vw, 40px) 72px;
+}
+h1 {
+  margin: 0 0 16px;
+  font: 400 clamp(2.6rem, 9vw, 5.75rem)/.95 var(--display);
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+}
+.tagline { margin: 0 0 32px; max-width: 34em; font-size: 1.15rem; }
+
+.tools { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-bottom: 36px; }
+.search {
+  flex: 1 1 280px;
+  max-width: 520px;
+  height: 54px;
+  padding: 0 24px;
+  font: 500 1.05rem var(--body);
+  color: var(--ink);
+  background: #fff;
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  box-shadow: 4px 4px 0 var(--ink);
+  -webkit-appearance: none;
+  appearance: none;
+}
+.search::placeholder { color: #5B5B7E; }
+.search:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+.status { margin: 0; font-weight: 500; }
+
+.grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr));
+  gap: 28px;
+}
+.tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 22px 22px 20px;
+  background: var(--tile);
+  border: 3px solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: 6px 6px 0 var(--ink);
+  transition: transform .08s ease-out, box-shadow .08s ease-out;
+}
+.tile[hidden] { display: none; }
+.tile:active { transform: translate(6px, 6px); box-shadow: 0 0 0 var(--ink); }
+.tile h2 { margin: 0 0 10px; font: 400 1.55rem/1.1 var(--display); overflow-wrap: anywhere; }
+
+/* The title link stretches over the whole card, so the entire card is clickable. */
+.title-link { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+.title-link::after { content: ""; position: absolute; inset: 0; border-radius: calc(var(--radius) - 3px); }
+.title-link:focus-visible { outline: none; }
+.title-link:focus-visible::after { outline: 4px solid var(--focus); outline-offset: 7px; }
+
+.desc { margin: 0; flex: 1; }
+.foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-top: 20px; }
+.meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin: 0; min-width: 0; font-size: .875rem; }
+.tag { padding: 1px 10px; background: rgba(255, 255, 255, .7); border: 2px solid var(--ink); border-radius: 999px; font-weight: 500; }
+.host { overflow-wrap: anywhere; }
+.play { padding: 6px 18px; background: var(--ink); color: #fff; border: 2px solid var(--ink); border-radius: 999px; font-weight: 600; }
+.tile:hover .play { background: #fff; color: var(--ink); }
+
+.empty { margin: 8px 0 0; font-size: 1.1rem; }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+@media (prefers-reduced-motion: reduce) { .tile { transition: none; } }
+</style>
+</head>
+
+<body>
+<div class="wrap">
+  <header>
+    <h1 id="title"></h1>
+    <p class="tagline" id="tagline"></p>
+  </header>
+
+  <main>
+    <div class="tools">
+      <label class="sr-only" for="q">Search games</label>
+      <input class="search" id="q" type="search" placeholder="Search games" autocomplete="off">
+      <p class="status" id="status" aria-live="polite"></p>
+    </div>
+    <ul class="grid" id="grid" role="list"></ul>
+    <p class="empty" id="empty" hidden></p>
+    <noscript><p class="empty">This page needs JavaScript to show the games.</p></noscript>
+  </main>
+</div>
+
+<script>
+const PALETTE = ["#FFD84D", "#62E3B1", "#6EC8FF", "#FF9DC8", "#B7A6FF", "#FFAB5E"];
+const $ = id => document.getElementById(id);
+
+document.title = SITE.title;
+$("title").textContent = SITE.title;
+$("tagline").textContent = SITE.tagline;
+
+function make(tag, className, text) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text) node.textContent = text;
+  return node;
+}
+
+// Lets you paste "mygame.com" without the https:// and still get a working link.
+function withProtocol(url) {
+  return /^[a-z][a-z0-9+.-]*:/i.test(url) ? url : "https://" + url;
+}
+
+function hostname(url) {
+  try { return new URL(url).hostname.replace(/^www\./, ""); }
+  catch (e) { return ""; }
+}
+
+const tiles = GAMES.map((game, i) => {
+  const url = withProtocol(String(game.url || "").trim());
+  const host = hostname(url);
+
+  const tile = make("li", "tile");
+  tile.style.setProperty("--tile", game.color || PALETTE[i % PALETTE.length]);
+
+  const link = make("a", "title-link", game.title);
+  link.href = url;
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  link.append(make("span", "sr-only", " (opens in a new tab)"));
+  const heading = make("h2");
+  heading.append(link);
+
+  const meta = make("p", "meta");
+  if (game.tag) meta.append(make("span", "tag", game.tag));
+  if (host) meta.append(make("span", "host", host));
+
+  const play = make("span", "play", "Play");
+  play.setAttribute("aria-hidden", "true");
+  const foot = make("div", "foot");
+  foot.append(meta, play);
+
+  tile.append(heading, make("p", "desc", game.description), foot);
+  tile._text = [game.title, game.description, game.tag, host].join(" ").toLowerCase();
+  return tile;
+});
+$("grid").append(...tiles);
+
+function update() {
+  const term = $("q").value.trim().toLowerCase();
+  let shown = 0;
+  for (const tile of tiles) {
+    const match = tile._text.includes(term);
+    tile.hidden = !match;
+    if (match) shown++;
+  }
+  const total = GAMES.length;
+  $("status").textContent = term
+    ? `Showing ${shown} of ${total} games`
+    : `${total} ${total === 1 ? "game" : "games"}`;
+
+  const empty = $("empty");
+  empty.hidden = shown > 0;
+  empty.textContent = total === 0
+    ? "No games yet. Add one to the GAMES list at the top of this file."
+    : `No games match “${term}”. Try a different word.`;
+}
+$("q").addEventListener("input", update);
+update();
+</script>
+</body>
+</html>
